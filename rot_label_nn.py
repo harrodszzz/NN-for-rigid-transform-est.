@@ -59,7 +59,7 @@ y_conv = tf.matmul(h_fc2_drop,W_fc3) + b_fc3
 cost = tf.reduce_sum(tf.abs(y_-y_conv))
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cost)
 batch_size = 50
-accuracy = tf.reduce_mean(tf.cast(tf.less_equal(tf.abs(y_-y_conv),10.0),tf.float32))
+accuracy = tf.reduce_mean(tf.cast(tf.less_equal(tf.abs(y_-y_conv),30.0),tf.float32))
 sess.run(tf.global_variables_initializer())
 
 accuracy_table = np.zeros([200,1])
