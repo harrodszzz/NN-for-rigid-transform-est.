@@ -42,9 +42,16 @@ for i in range(11):
 		X_r[i*num+j,:] = dst.reshape(1,784)
 		y_r[i*num+j,:] = [rotate_degrees]
 
+# Concat
+size = X_r.shape[0]
+X_r_n = np.zeros([size,1568])
+
+for i in range(size):
+	X_r_n[i,:] = np.concatenate((X_r[i,:],X_re))
+
+X_r = X_r_n
 # split to train and test
 train_ratio = 0.4
-size = X_r.shape[0]
 
 # train set
 train_num = int(train_ratio * size)
@@ -59,29 +66,12 @@ test_ind = np.array(list(set(total) - set(train_ind)))
 X_te = X_r[test_ind,:]
 y_te = y_r[test_ind,:]
 
-# --- Verify dataset ---
-plt.figure(figsize=[10,10])
-tr_size_unit = y_tr.shape[0]/5
-te_size_unit = y_te.shape[0]/5
-for i in range(1,5):
-	plt.subplot(2,4,i)
-	plt.imshow(X_tr[i*tr_size_unit,:].reshape(28,28))
-	plt.title(y_tr[i*tr_size_unit])
-for i in range(1,5):
-	plt.subplot(2,4,i+4)
-	plt.imshow(X_te[i*te_size_unit,:].reshape(28,28))
-	plt.title(y_te[i*te_size_unit])
-plt.show()
-
-# --- Verify reference image ---
-print X_re.shape
-plt.imshow(X_re.reshape(28,28))
-plt.show()
+print X_tr.shape, y_tr.shape
+print X_te.shape, y_te.shape
 
 # --- Save dataset ---
 np.save('train_im',X_tr)
 np.save('train_lb',y_tr)
 np.save('test_im',X_te)
 np.save('test_lb',y_te)
-np.save('reference',X_re)
 
