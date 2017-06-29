@@ -88,6 +88,28 @@ for i in range(1,5):
 	plt.title("eval %g, real %g" %(int(y_conv.eval(feed_dict={x:np.array([X_tr[i*tr_size_unit,:]]),keep_prob:1.0})),int(y_te[i*te_size_unit])))
 plt.show()
 
+# -- build neighbour error matrix -- # 
+error = tf.abs(y_-y_conv).eval(feed_dict={x:X_te, y_:y_te, keep_prob:1.0})
+print error.shape
+nTest = error.shape[0]
+error_table = np.zeros([nTest,4])
+for i in range(nTest):
+	if error[i] <= 10:
+		error_table[i,0] += 1
+	else:
+		if error[i] <= 15:
+			error_table[i,1] += 1
+		else:
+			if error[i] <= 30:
+				error_table[i,2] += 1
+			else:
+				error_table[i,3] += 1
+
+total = sum(error_table)
+print("10de error %g, 10-15de error %g, 15-30de error %g, bigger than 30de error %g"%(total[0]/nTest,total[1]/nTest,total[2]/nTest,total[3]/nTest))
+
+plt.imshow(error_table, aspect='auto')
+plt.show()
 #plt.plot(accuracy_table)
 #plt.title('accuracy plot')
 #plt.show()
