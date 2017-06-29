@@ -73,6 +73,21 @@ for i in range(20000):
 	train_step.run(feed_dict={x: x_batch, y_:y_batch, keep_prob: 0.5})
 
 print("test accuracy %g" % accuracy.eval(feed_dict={x: X_te, y_: y_te, keep_prob: 1.0}))
-plt.plot(accuracy_table)
-plt.title('accuracy plot')
+
+# -- verify -- # 
+plt.figure(figsize=[8,8])
+tr_size_unit = y_tr.shape[0]/5
+te_size_unit = y_te.shape[0]/5
+for i in range(1,5):
+	plt.subplot(2,4,i)
+	plt.imshow(X_tr[i*tr_size_unit,:].reshape(28,28))
+	plt.title("eval %g, real %g" %(int(y_conv.eval(feed_dict={x:np.array([X_tr[i*tr_size_unit,:]]),keep_prob:1.0})),int(y_tr[i*tr_size_unit])))
+for i in range(1,5):
+	plt.subplot(2,4,i+4)
+	plt.imshow(X_te[i*te_size_unit,:].reshape(28,28))
+	plt.title("eval %g, real %g" %(int(y_conv.eval(feed_dict={x:np.array([X_tr[i*tr_size_unit,:]]),keep_prob:1.0})),int(y_te[i*te_size_unit])))
 plt.show()
+
+#plt.plot(accuracy_table)
+#plt.title('accuracy plot')
+#plt.show()
